@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.szkingdom.mapper.dao.SysDeptMapper" >
+  <resultMap id="BaseResultMap" type="com.szkingdom.entity.SysDept" >
+    <id column="dept_id" property="deptId" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+    <result column="charge_person" property="chargePerson" jdbcType="VARCHAR" />
+    <result column="linkman" property="linkman" jdbcType="VARCHAR" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="cellphone_number" property="cellphoneNumber" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dept_id, parent_id, dept_name, dept_code, charge_person, linkman, phone_number, cellphone_number,
+    email, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dept
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_dept
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.szkingdom.entity.SysDept" >
+    insert into sys_dept (dept_id, parent_id, dept_name, dept_code,
+      charge_person, linkman, phone_number, 
+      cellphone_number, email, create_time, 
+      update_time)
+    values (#{deptId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{deptName,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR},
+      #{chargePerson,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
+      #{cellphoneNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.szkingdom.entity.SysDept" >
+    insert into sys_dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        dept_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="deptName != null" >
+        dept_name,
+      </if>
+      <if test="deptCode != null" >
+        dept_code,
+      </if>
+      <if test="chargePerson != null" >
+        charge_person,
+      </if>
+      <if test="linkman != null" >
+        linkman,
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number,
+      </if>
+      <if test="cellphoneNumber != null" >
+        cellphone_number,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptCode != null" >
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="chargePerson != null" >
+        #{chargePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null" >
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphoneNumber != null" >
+        #{cellphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="addDeptUserBatch" parameterType="java.util.List">
+    INSERT IGNORE INTO sys_dept_user (dept_user_id, dept_id, user_id, create_time, update_time) VALUES
+      <foreach collection="list" item="item" separator=",">
+          (#{item.deptUserId}, #{item.deptId}, #{item.userId}, #{item.createTime}, #{item.updateTime})
+      </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.szkingdom.entity.SysDept" >
+    update sys_dept
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="deptName != null" >
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargePerson != null" >
+        charge_person = #{chargePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null" >
+        linkman = #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphoneNumber != null" >
+        cellphone_number = #{cellphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.szkingdom.entity.SysDept" >
+    update sys_dept
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      charge_person = #{chargePerson,jdbcType=VARCHAR},
+      linkman = #{linkman,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      cellphone_number = #{cellphoneNumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </update>
+
+  <select id="listSysDept" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_dept
+  </select>
+
+  <select id="listDeptUser" resultType="com.szkingdom.entity.Users">
+    SELECT du.dept_id deptId, u.user_id userId,
+      u.username from sys_dept_user du
+    LEFT JOIN users u on u.user_id = du.user_id
+  </select>
+</mapper>

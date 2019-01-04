@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.mapper.dao.PermissionMapper">
+
+    <select id="selectPermissionByUserId" resultType="com.szkingdom.entity.SysPermission">
+        SELECT p.permission_id,p.url from sys_users_role ur
+          INNER JOIN sys_role r on ur.role_id = r.role_id
+          INNER JOIN sys_role_permission rp on rp.role_id = r.role_id
+          INNER JOIN sys_permission p on rp.permission_id = p.permission_id
+        where ur.user_id = #{userId} UNION
+        SELECT p.permission_id,p.url from sys_users_permission up
+          INNER JOIN sys_permission p on up.permission_id = p.permission_id
+        where up.user_id = #{userId}
+    </select>
+
+    <select id="selectPermissionByUserName" resultType="com.szkingdom.entity.SysPermission">
+        SELECT p.permission_id,p.url from users u
+          INNER JOIN sys_users_role ur on u.user_id = ur.user_id
+          INNER JOIN sys_role r on ur.role_id = r.role_id
+          INNER JOIN sys_role_permission rp on rp.role_id = r.role_id
+          INNER JOIN sys_permission p on rp.permission_id = p.permission_id
+        where u.username = #{username} UNION
+        SELECT p.permission_id,p.url from users u
+          INNER JOIN sys_users_permission up on u.user_id = up.user_id
+          INNER JOIN sys_permission p on up.permission_id = p.permission_id
+        where u.username = #{username}
+
+    </select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szkingdom.mapper.dao.RoleMapper">
+    <update id="updateRole">
+        update sys_role
+        set dept_id = #{deptId},
+        role_name = #{roleName},
+        role_code = #{roleCode},
+        update_time = #{updateTime}
+        where role_id = #{roleId}
+    </update>
+
+
+    <select id="listRole" resultType="com.szkingdom.entity.SysRole">
+        SELECT role_id roleId, dept_id deptId, role_code roleCode, role_name roleName from sys_role
+    </select>
+
+    <insert id="grantRoleToUser" parameterType="java.util.List">
+      INSERT INTO sys_users_role (users_role_id, user_id, role_id, create_time, update_time) VALUES
+      <foreach collection="list" item="item" separator=",">
+        (#{item.userRoleId}, #{item.userId}, #{item.roleId}, #{item.createTime}, #{item.updateTime})
+      </foreach>
+    </insert>
+
+    <insert id="addRole">
+        INSERT INTO sys_role (role_id, dept_id, role_code, role_name, create_time, update_time) VALUES
+        (#{roleId}, #{deptId}, #{roleCode}, #{roleName}, #{createTime}, #{updateTime})
+    </insert>
+</mapper>
